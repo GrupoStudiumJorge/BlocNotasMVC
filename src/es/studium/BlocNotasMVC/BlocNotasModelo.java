@@ -1,10 +1,63 @@
 package es.studium.BlocNotasMVC;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
 public class BlocNotasModelo
 {
 	public BlocNotasModelo(){}
+	
+	public String abrir(String fichero)
+	{
+		String resultado = "";
+		try
+		{
+			// Buffer de lectura enlazado al FileReader que enlaza con el fichero físico
+			BufferedReader entrada = new BufferedReader(new FileReader(fichero));
+			String s;
+			// Bucle para sacar toda la información del archivo línea a línea
+			while((s=entrada.readLine())!=null)
+			{
+				// Añadimos el texto al final del textarea
+				resultado += s;
+				// Añadimos un salto de línea en el textarea para que cada línea aparezca por separado
+				resultado += ("\n");
+			}
+			// Cerrar el objeto entrada
+			entrada.close();
+		}
+		catch(IOException i)
+		{
+			resultado = "Error";
+		}
+		return resultado;
+	}
+	public boolean guardar(String fichero, String contenido)
+	{
+		boolean resultado = true;
+		try
+		{
+			// Buffer de escritura enlazado al FileWriter que enlaza con el fichero físico
+			BufferedWriter bw = new BufferedWriter(new FileWriter(fichero));
+			// Objeto para la escritura en el Buffer
+			PrintWriter salida = new PrintWriter(bw);
+			// Copia en el archivo el contenido del textarea
+			salida.println(contenido);
+			// Cerrar objetos de salida
+			bw.close();
+			salida.close();
+		}
+		catch(IOException i)
+		{
+			resultado = false;
+		} 
+		return resultado;
+	}
 
 	public int gestionContarPalabras(String miCadena)
 	{
